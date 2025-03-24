@@ -33,9 +33,6 @@ jobs:
       - name: Install frontend dependencies
         run: cd frontend && npm install
 
-      - name: Install jest-junit for test reporting
-        run: cd frontend && npm install --save-dev jest-junit
-
       - name: Run frontend tests
         run: cd frontend && npm test
 

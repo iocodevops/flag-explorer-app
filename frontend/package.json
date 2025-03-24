@@ -32,11 +32,5 @@
  "jest-junit": {
       "outputDirectory": "./",
       "outputName": "junit.xml"
-    },
-  "jest": {
-      "reporters": [
-          "default",
-          "jest-junit"
-      ]
     }
 }
