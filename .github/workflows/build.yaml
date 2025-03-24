@@ -124,33 +124,33 @@ jobs:
           name: vulnerability-reports
           path: reports/
 
-  # deploy:
-  #   needs: [backend, frontend, security]
-  #   if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-  #   runs-on: ubuntu-latest
+  deploy:
+    needs: [backend, frontend, security]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
     
-  #   steps:
-  #     - uses: actions/checkout@v3
+    steps:
+      - uses: actions/checkout@v3
       
-  #     - name: Download frontend build
-  #       uses: actions/download-artifact@v3
-  #       with:
-  #         name: frontend-build
-  #         path: frontend/build
+      - name: Download frontend build
+        uses: actions/download-artifact@v3
+        with:
+          name: frontend-build
+          path: ./frontend/build
           
-  #     - name: deploy-task
+      # Backend deployment - assuming Node.js backend with Express
+      - name: Set up backend for deployment
+        run: |
+          cd backend
+          npm ci --production
+          npm run build
+          
+      - name: Create backend deployment package
+        run: |
+          cd backend
+          zip -r ../deploy.zip .
+          
+      # Configure cloud deployment based on your hosting platform
 
-  # notify:
-  #   needs: [deploy]
-  #   if: always()
-  #   runs-on: ubuntu-latest
-    
-  #   steps:
-  #     - name: Send Slack notification
-  #       uses: rtCamp/action-slack-notify@v2
-  #       env:
-  #         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-  #         SLACK_CHANNEL: deployments
-  #         SLACK_COLOR: ${{ job.status }}
-  #         SLACK_TITLE: Flag Explorer Deployment
-  #         SLACK_MESSAGE: 'Deployment status: ${{ job.status }}'
+      # notify action here to send alerts to the slack/teams channel
+   
