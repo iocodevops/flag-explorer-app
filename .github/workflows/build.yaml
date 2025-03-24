@@ -27,5 +27,26 @@ jobs:
       - name: Install frontend dependencies
         run: cd frontend && npm install
 
+      - name: Run frontend tests
+        run: cd frontend && npm test
+
       - name: Build frontend
         run: cd frontend && npm run build
+
+      - name: Package backend
+        run: zip -r backend.zip backend
+
+      - name: Package frontend
+        run: zip -r frontend.zip frontend/build
+
+      - name: Upload backend package
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-artifact
+          path: backend.zip
+
+      - name: Upload frontend package
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-artifact
+          path: frontend.zip
