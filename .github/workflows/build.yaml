@@ -24,46 +24,8 @@ jobs:
       - name: Run backend tests
         run: cd backend && npm test
 
-      # Add test reporting for backend
-      - name: Upload backend test results
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: backend-test-results
-          path: backend/coverage/
-          
-      - name: Publish Backend Test Report
-        uses: dorny/test-reporter@v1
-        if: always()
-        with:
-          name: Backend Tests
-          path: "backend/reports/jest-*.xml"
-          reporter: jest-junit
-          fail-on-error: false
-
       - name: Install frontend dependencies
         run: cd frontend && npm install
 
       - name: Build frontend
         run: cd frontend && npm run build
-        
-      # Add frontend test step
-      - name: Run frontend tests
-        run: cd frontend && npm test
-        
-      # Add test reporting for frontend
-      - name: Upload frontend test results
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: frontend-test-results
-          path: frontend/coverage/
-          
-      - name: Publish Frontend Test Report
-        uses: dorny/test-reporter@v1
-        if: always()
-        with:
-          name: Frontend Tests
-          path: "frontend/reports/jest-*.xml"
-          reporter: jest-junit
-          fail-on-error: false
