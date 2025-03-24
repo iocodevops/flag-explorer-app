@@ -28,5 +28,14 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "jest": {
+  "reporters": [
+    "default",
+    ["jest-junit", {
+      "outputDirectory": "reports",
+      "outputName": "jest-junit.xml"
+    }]
+  ]
+}
 }

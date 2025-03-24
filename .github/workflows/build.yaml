@@ -1,4 +1,4 @@
-name: Build and Test
+name: CI/CD Pipeline - Flag Explorer
 
 on:
   push:
@@ -7,45 +7,63 @@ on:
     branches: [ main ]
 
 jobs:
-  build-and-test:
+  build-test:
     runs-on: ubuntu-latest
-    
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      
+      - uses: actions/checkout@v3
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18.x'
-          cache: 'npm'
-      
-      - name: Install dependencies
-        run: npm ci
-      
-      - name: Run tests
-        run: npm test
-        
-      - name: Build
-        run: npm run build
-      
-      - name: Upload test results
+
+      - name: Install backend dependencies
+        run: cd backend && npm install
+
+      - name: Run backend tests
+        run: cd backend && npm test
+
+      # Add test reporting for backend
+      - name: Upload backend test results
         uses: actions/upload-artifact@v4
+        if: always()
         with:
-          name: test-results
-          path: coverage/
+          name: backend-test-results
+          path: backend/coverage/
           
-      - name: Publish Test Report
+      - name: Publish Backend Test Report
         uses: dorny/test-reporter@v1
         if: always()
         with:
-          name: Test Results
-          path: "**/*.xml"
+          name: Backend Tests
+          path: "backend/reports/jest-*.xml"
           reporter: jest-junit
           fail-on-error: false
-      
-      - name: Upload build artifacts
+
+      - name: Install frontend dependencies
+        run: cd frontend && npm install
+
+      - name: Build frontend
+        run: cd frontend && npm run build
+        
+      # Add frontend test step
+      - name: Run frontend tests
+        run: cd frontend && npm test
+        
+      # Add test reporting for frontend
+      - name: Upload frontend test results
         uses: actions/upload-artifact@v4
+        if: always()
         with:
-          name: build
-          path: build/
+          name: frontend-test-results
+          path: frontend/coverage/
+          
+      - name: Publish Frontend Test Report
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: Frontend Tests
+          path: "frontend/reports/jest-*.xml"
+          reporter: jest-junit
+          fail-on-error: false
