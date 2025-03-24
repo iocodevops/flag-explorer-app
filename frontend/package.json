@@ -29,13 +29,14 @@
       "last 1 safari version"
     ]
   },
+ "jest-junit": {
+      "outputDirectory": "./",
+      "outputName": "junit.xml"
+    },
   "jest": {
-  "reporters": [
-    "default",
-    ["jest-junit", {
-      "outputDirectory": "reports",
-      "outputName": "jest-junit.xml"
-    }]
-  ]
-}
+      "reporters": [
+          "default",
+          "jest-junit"
+      ]
+    }
 }

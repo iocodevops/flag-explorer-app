@@ -11,21 +11,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18.x'
 
+      # Backend
       - name: Install backend dependencies
         run: cd backend && npm install
+
+      - name: Install jest-junit for test reporting
+        run: cd backend && npm install --save-dev jest-junit
 
       - name: Run backend tests
         run: cd backend && npm test
 
+      # Frontend
       - name: Install frontend dependencies
         run: cd frontend && npm install
+
+      - name: Install jest-junit for test reporting
+        run: cd frontend && npm install --save-dev jest-junit
 
       - name: Run frontend tests
         run: cd frontend && npm test
@@ -33,19 +42,23 @@ jobs:
       - name: Build frontend
         run: cd frontend && npm run build
 
+      # Package backend
       - name: Package backend
         run: zip -r backend.zip backend
 
+      # Package frontend
       - name: Package frontend
         run: zip -r frontend.zip frontend/build
 
-      - name: Upload backend package
+      # Upload backend artifact
+      - name: Upload backend artifact
         uses: actions/upload-artifact@v4
         with:
           name: backend-artifact
           path: backend.zip
 
-      - name: Upload frontend package
+      # Upload frontend artifact
+      - name: Upload frontend artifact
         uses: actions/upload-artifact@v4
         with:
           name: frontend-artifact

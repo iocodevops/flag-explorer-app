@@ -16,12 +16,15 @@
     "devDependencies": {
         "jest": "^29.0.0"
     },
+    "jest-junit": {
+        "outputDirectory": "./",
+        "outputName": "junit.xml"
+    },
     "jest": {
         "reporters": [
-        "default",
-        ["jest-junit", {
-        "outputDirectory": "reports",
-        "outputName": "jest-junit.xml"
-        }]]
+            "default",
+            "jest-junit"
+        ]
     }
+
 }
