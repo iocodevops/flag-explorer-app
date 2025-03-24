@@ -86,3 +86,5 @@ npm install --save-dev jest
 
 ## 📦 Deployment
 This app is structured for containerization or simple cloud deploys. Add Dockerfiles or hosting setup as needed.
+
+## Environment protection; you can use envirnment protection rules to avoid accidental deployments to the environmentss by keeping environment approval gates in github actions
